@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Your Workout Plan - FitBuddy{% endblock %}
+
+{% block content %}
+<main class="card">
+  <h1>🏋️ Your Personalized Workout Plan</h1>
+
+  {% if message %}
+  <div class="alert success" role="status">✅ {{ message }}</div>
+  {% endif %}
+  {% if error %}
+  <div class="alert error" role="alert">{{ error }}</div>
+  {% endif %}
+
+  <h2>User Information</h2>
+  <dl class="profile">
+    <div><dt>Name</dt><dd>{{ username }}</dd></div>
+    <div><dt>User ID</dt><dd>{{ user_id }}</dd></div>
+    <div><dt>Age</dt><dd>{{ age }}</dd></div>
+    <div><dt>Weight</dt><dd>{{ weight }} kg</dd></div>
+    <div><dt>Goal</dt><dd>{{ goal }}</dd></div>
+    <div><dt>Intensity</dt><dd>{{ intensity|capitalize }}</dd></div>
+  </dl>
+
+  <h2>Workout Plan{% if was_updated %} (updated){% endif %}</h2>
+  <pre class="plan">{{ workout_plan }}</pre>
+
+  <h2>💡 Nutrition Tip</h2>
+  <p class="tip">{{ nutrition_tip }}</p>
+  {% if tip_source == 'fallback' %}
+  <p class="tip-note">Showing a built-in tip because the AI tip service was unavailable.</p>
+  {% endif %}
+
+  <h2>📝 Share Your Feedback</h2>
+  <form method="post" action="/submit-feedback" class="js-busy" data-busy-text="Updating your plan...">
+    <label for="fb_user_id">Your Unique User ID:</label>
+    <input type="number" id="fb_user_id" name="user_id" min="1" step="1" required value="{{ user_id }}"
+           placeholder="Enter the same User ID used to generate your plan">
+
+    <label for="feedback">Your Feedback:</label>
+    <textarea id="feedback" name="feedback" minlength="2" maxlength="500" required
+              placeholder="e.g., more focus on cardio, include more rest days, add yoga"></textarea>
+
+    <button type="submit">Submit Feedback</button>
+  </form>
+</main>
+{% endblock %}

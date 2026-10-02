@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}FitBuddy - AI Workout Generator{% endblock %}
+
+{% block content %}
+<main class="card narrow">
+  <h1>💪 FitBuddy - AI Workout Generator</h1>
+
+  {% if error %}
+  <div class="alert error" role="alert">{{ error }}</div>
+  {% endif %}
+
+  <form method="post" action="/generate-workout" class="js-busy" data-busy-text="Generating your plan...">
+    <label for="username">Name:</label>
+    <input type="text" id="username" name="username" maxlength="60" required value="{{ form.username or '' }}">
+
+    <label for="user_id">User ID:</label>
+    <input type="number" id="user_id" name="user_id" min="1" step="1" required value="{{ form.user_id or '' }}">
+    <p class="hint">Pick a number you will remember. You need it to send feedback later.</p>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" min="10" max="100" step="1" required value="{{ form.age or '' }}">
+
+    <label for="weight">Weight (kg):</label>
+    <input type="number" id="weight" name="weight" min="21" max="350" step="0.1" required value="{{ form.weight or '' }}">
+
+    <label for="goal">Fitness Goal:</label>
+    <input type="text" id="goal" name="goal" maxlength="200" required
+           placeholder="e.g., weight loss, muscle gain, flexibility" value="{{ form.goal or '' }}">
+
+    <label for="intensity">Workout Intensity:</label>
+    <select id="intensity" name="intensity" required>
+      {% set chosen = (form.intensity or 'medium')|lower %}
+      <option value="low" {{ 'selected' if chosen == 'low' }}>Low</option>
+      <option value="medium" {{ 'selected' if chosen == 'medium' }}>Medium</option>
+      <option value="high" {{ 'selected' if chosen == 'high' }}>High</option>
+    </select>
+
+    <button type="submit">Generate Plan</button>
+  </form>
+</main>
+{% endblock %}

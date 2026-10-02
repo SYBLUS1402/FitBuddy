@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}All Users - FitBuddy{% endblock %}
+
+{% block content %}
+<main class="card wide">
+  <h1>📋 FitBuddy - All Users &amp; Workout Plans</h1>
+
+  {% if users %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Weight (kg)</th>
+          <th>Goal</th>
+          <th>Intensity</th>
+          <th>Original Plan</th>
+          <th>Updated Plan</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.age }}</td>
+          <td>{{ user.weight }}</td>
+          <td>{{ user.goal }}</td>
+          <td>{{ user.intensity }}</td>
+          <td><pre>{{ user.original_plan }}</pre></td>
+          <td><pre>{{ user.updated_plan }}</pre></td>
+          <td>
+            <form method="post" action="/delete-user/{{ user.id }}"
+                  onsubmit="return confirm('Delete this user and their plans?');">
+              <button type="submit" class="btn small danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">No users yet. Generate a plan from the home page and it will appear here.</p>
+  {% endif %}
+</main>
+{% endblock %}

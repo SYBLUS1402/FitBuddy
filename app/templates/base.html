@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}FitBuddy{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0f172a; --muted: #475569; --line: #d5deea; --card: rgba(255, 255, 255, .96);
+      --accent: #3b82f6; --accent-dark: #2563eb; --danger: #dc2626; --danger-dark: #b91c1c;
+      --ok: #166534; --ok-bg: #dcfce7; --bad: #991b1b; --bad-bg: #fee2e2; --soft: #f1f5f9;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(8, 12, 24, .62), rgba(8, 12, 24, .62)),
+        url("/static/images/gym-bg.jpg") center / cover no-repeat,
+        #0b1020;
+    }
+    .page {
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 18px; padding: 32px 16px;
+    }
+    .card {
+      width: 100%; max-width: 780px; background: var(--card); border-radius: 14px;
+      padding: 28px 32px; box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
+    }
+    .card.narrow { max-width: 460px; }
+    .card.wide { max-width: 1320px; }
+    h1 { font-size: 1.75rem; font-weight: 900; letter-spacing: -.01em; text-align: center; margin: 0 0 20px; }
+    h2 { font-size: 1.2rem; font-weight: 700; text-align: center; margin: 26px 0 12px; }
+    label { display: block; font-size: .85rem; font-weight: 700; margin: 14px 0 6px; }
+    input, select, textarea {
+      width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 8px;
+      font: inherit; color: var(--ink); background: #fff;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible {
+      outline: 3px solid rgba(59, 130, 246, .45); outline-offset: 1px;
+    }
+    .hint { font-size: .8rem; color: var(--muted); margin: 5px 0 0; }
+    button, .btn {
+      display: inline-block; width: 100%; margin-top: 20px; padding: 12px; border: 0; border-radius: 8px;
+      background: var(--accent); color: #fff; font: inherit; font-weight: 700; text-align: center;
+      text-decoration: none; cursor: pointer; transition: background .15s;
+    }
+    button:hover, .btn:hover { background: var(--accent-dark); }
+    button:disabled { opacity: .7; cursor: wait; }
+    .btn.small { width: auto; margin: 0; padding: 6px 12px; font-size: .8rem; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: var(--danger-dark); }
+    .alert { padding: 12px 14px; border-radius: 8px; margin-bottom: 16px; font-weight: 500; }
+    .alert.error { background: var(--bad-bg); color: var(--bad); }
+    .alert.success { background: var(--ok-bg); color: var(--ok); font-size: 1.05rem; }
+    dl.profile {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px 24px; margin: 0;
+    }
+    dl.profile div { min-width: 0; }
+    dl.profile dt { font-weight: 700; font-size: .85rem; }
+    dl.profile dd { margin: 2px 0 0; overflow-wrap: anywhere; }
+    pre.plan {
+      margin: 0; padding: 16px; background: var(--soft); border-radius: 10px; max-height: 70vh; overflow: auto;
+      font: .88rem/1.55 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    .tip { margin: 0; text-align: center; line-height: 1.6; }
+    .tip-note { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 8px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; min-width: 1000px; border-collapse: collapse; font-size: .88rem; }
+    th { background: #1e88e5; color: #fff; text-align: left; padding: 10px; font-weight: 700; }
+    td { padding: 10px; border-top: 1px solid var(--line); vertical-align: top; }
+    td pre {
+      margin: 0; padding: 8px; max-height: 300px; overflow: auto; background: var(--soft); border-radius: 6px;
+      font: .76rem/1.45 ui-monospace, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    .empty { text-align: center; color: var(--muted); padding: 24px 0 8px; }
+    .nav { display: flex; gap: 20px; justify-content: center; font-size: .9rem; }
+    .nav a { color: #fff; opacity: .9; }
+    @media (max-width: 640px) {
+      .card { padding: 20px 16px; }
+      h1 { font-size: 1.4rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    {% block content %}{% endblock %}
+    <nav class="nav" aria-label="Site">
+      <a href="/">New plan</a>
+      <a href="/view-all-users">All users</a>
+      <a href="/docs">API docs</a>
+    </nav>
+  </div>
+
+  <script>
+    // Gemini can take 10-40 seconds: show progress and stop double submits.
+    document.querySelectorAll("form.js-busy").forEach(function (form) {
+      var button = form.querySelector("button[type=submit]");
+      var label = button ? button.textContent : "";
+      form.addEventListener("submit", function () {
+        if (!button) return;
+        button.disabled = true;
+        button.textContent = form.dataset.busyText || "Working...";
+      });
+      window.addEventListener("pageshow", function () {   // back button restores the page
+        if (!button) return;
+        button.disabled = false;
+        button.textContent = label;
+      });
+    });
+  </script>
+</body>
+</html>
